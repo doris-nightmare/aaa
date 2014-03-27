@@ -1,32 +1,87 @@
 package extractor;
 
+import metamodel.ClassEntity;
+
 import org.antlr.v4.runtime.TokenStream;
+import java.util.*;
 
 import antlr.gencode.Java7BaseListener;
 import antlr.gencode.Java7Parser;
+import antlr.gencode.Java7Parser.NormalClassDeclarationContext;
+import antlr.gencode.Java7Parser.NormalInterfaceDeclarationContext;
+import antlr.gencode.Java7Parser.PackageDeclarationContext;
 
 //it seems that all the logic needs to be written in the listener
+// one listener for one compilation unit
+
 public class ExtractClassListener extends Java7BaseListener {
+	//in java, package name can be omitted
+	String pkgName=null;
 	Java7Parser parser;
+	List<ClassEntity> classList;
 	
+	//constructor
 	public ExtractClassListener(Java7Parser parser){
 		this.parser = parser;
-		System.out.println("initialization");
-
+		classList = new ArrayList<ClassEntity>();
 		
 	}
 	
+	
+	@Override
+	public void enterPackageDeclaration(PackageDeclarationContext ctx) {
+		// TODO Auto-generated method stub
+		super.enterPackageDeclaration(ctx);
+		pkgName = ctx.qualifiedIdentifier().getText();		
+	}
+
+	
+	
+	
+	
+	
+
 	@Override
 	public void enterClassDeclaration(Java7Parser.ClassDeclarationContext ctx){
-		System.out.println("Begin Parse");
+		ClassEntity ce = new ClassEntity();
+		System.out.println("enter class");
 		
 	}
 	
 	@Override
 	public void exitClassDeclaration(Java7Parser.ClassDeclarationContext ctx){
-		System.out.println("End parse");
+		System.out.println("exit class");
 	}
 	
+	
+	
+	@Override
+	public void enterNormalClassDeclaration(NormalClassDeclarationContext ctx) {
+		// TODO Auto-generated method stub
+		super.enterNormalClassDeclaration(ctx);
+		System.out.println(ctx.Identifier().toString());
+	}
+
+	@Override
+	public void exitNormalClassDeclaration(NormalClassDeclarationContext ctx) {
+		// TODO Auto-generated method stub
+		super.exitNormalClassDeclaration(ctx);
+	}
+
+	@Override
+	public void enterNormalInterfaceDeclaration(
+			NormalInterfaceDeclarationContext ctx) {
+		// TODO Auto-generated method stub
+		super.enterNormalInterfaceDeclaration(ctx);
+	}
+
+	@Override
+	public void exitNormalInterfaceDeclaration(
+			NormalInterfaceDeclarationContext ctx) {
+		// TODO Auto-generated method stub
+		super.exitNormalInterfaceDeclaration(ctx);
+	}
+
 	@Override
 	public void enterMethodDeclaration(
 	        Java7Parser.MethodDeclarationContext ctx

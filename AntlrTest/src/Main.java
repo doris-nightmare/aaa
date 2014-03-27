@@ -33,7 +33,7 @@ public class Main{
 			File dir = new File(headFirst+"/adapter");
 			//printName(dir,"");
 			
-			input = new ANTLRInputStream(new FileInputStream("/Users/Doris/Documents/workspace/antlr/AntlrTest/src/Test.java"));
+			input = new ANTLRInputStream(new FileInputStream("./src/test/Test.java"));
 			Java7Lexer lexer = new Java7Lexer(input);
 			CommonTokenStream tokens = new CommonTokenStream(lexer);
 			Java7Parser parser = new Java7Parser(tokens);
@@ -41,17 +41,17 @@ public class Main{
 			
 			// name is the first rule in a grammar file 
 			ParseTree tree = parser.compilationUnit();
-			for(int i=0; i< tree.getChildCount();i++){
-				ParseTree subtree = tree.getChild(i);
-				
-				System.out.println(subtree.getText());
-			}
+//			for(int i=0; i< tree.getChildCount();i++){
+//				ParseTree subtree = tree.getChild(i);
+//				
+//				System.out.println(subtree.getText());
+//			}
 			
 			//System.out.println(tree.toStringTree(parser));
 			
-//			ParseTreeWalker walker = new ParseTreeWalker();
-//			ExtractClassListener extractor = new ExtractClassListener(parser);		
-//			walker.walk(extractor, tree);
+			ParseTreeWalker walker = new ParseTreeWalker();
+			ExtractClassListener extractor = new ExtractClassListener(parser);		
+			walker.walk(extractor, tree);
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
