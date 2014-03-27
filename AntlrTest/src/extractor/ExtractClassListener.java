@@ -7,6 +7,8 @@ import java.util.*;
 
 import antlr.gencode.Java7BaseListener;
 import antlr.gencode.Java7Parser;
+import antlr.gencode.Java7Parser.ClassOrInterfaceDeclarationContext;
+import antlr.gencode.Java7Parser.InterfaceDeclarationContext;
 import antlr.gencode.Java7Parser.NormalClassDeclarationContext;
 import antlr.gencode.Java7Parser.NormalInterfaceDeclarationContext;
 import antlr.gencode.Java7Parser.PackageDeclarationContext;
@@ -20,13 +22,15 @@ public class ExtractClassListener extends Java7BaseListener {
 	Java7Parser parser;
 	List<ClassEntity> classList;
 	
+	ClassEntity currentClass = null;
+	
 	//constructor
 	public ExtractClassListener(Java7Parser parser){
 		this.parser = parser;
 		classList = new ArrayList<ClassEntity>();
+		currentClass = new ClassEntity();
 		
 	}
-	
 	
 	@Override
 	public void enterPackageDeclaration(PackageDeclarationContext ctx) {
@@ -34,24 +38,41 @@ public class ExtractClassListener extends Java7BaseListener {
 		super.enterPackageDeclaration(ctx);
 		pkgName = ctx.qualifiedIdentifier().getText();		
 	}
+	
+	
+	@Override
+	public void enterClassOrInterfaceDeclaration(
+			ClassOrInterfaceDeclarationContext ctx) {
+		// TODO Auto-generated method stub
+		super.enterClassOrInterfaceDeclaration(ctx);
+		
+		//System.out.println(ctx.Identifier().toString());
+		for(Java7Parser.ModifierContext mctx : ctx.modifier()){
+			System.out.println(mctx.getText());
+		}
+		
+//		Object a = ctx.classDeclaration().enumDeclaration();
+//		Object b = ctx.classDeclaration().normalClassDeclaration();
+	}
 
 	
 	
 	
-	
-	
+
 
 	@Override
 	public void enterClassDeclaration(Java7Parser.ClassDeclarationContext ctx){
-		ClassEntity ce = new ClassEntity();
-		System.out.println("enter class");
+		
+		
 		
 	}
 	
 	@Override
 	public void exitClassDeclaration(Java7Parser.ClassDeclarationContext ctx){
-		System.out.println("exit class");
+		
 	}
+	
+	
 	
 	
 	
@@ -60,6 +81,11 @@ public class ExtractClassListener extends Java7BaseListener {
 		// TODO Auto-generated method stub
 		super.enterNormalClassDeclaration(ctx);
 		System.out.println(ctx.Identifier().toString());
+		
+		//normal class declaration is different from enum
+		ClassEntity ce = new ClassEntity();
+		String className = ctx.Identifier().toString();
+		
 	}
 
 	@Override
@@ -73,6 +99,9 @@ public class ExtractClassListener extends Java7BaseListener {
 			NormalInterfaceDeclarationContext ctx) {
 		// TODO Auto-generated method stub
 		super.enterNormalInterfaceDeclaration(ctx);
+		
+		String interfaceName = ctx.Identifier().toString();
+		System.out.println(interfaceName);
 	}
 
 	@Override

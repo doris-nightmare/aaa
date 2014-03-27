@@ -9,12 +9,21 @@ public class Test {
 	}
 	
 	class TestB{
-		private void c(){
+		private void a2(){
 			
 		}
 		
-		private void d(){
+		private void b2(){
 			
 		}
+	}
+	
+	private void c(){
+		
+	}
+	
+	abstract class TestC{
+		protected abstract void a3();
+		protected abstract void b3();
 	}
 }
