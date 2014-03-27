@@ -122,5 +122,6 @@ public class ExtractClassListener extends Java7BaseListener {
 		    type = tokens.getText(ctx.typeRef());
 		}
 		String args = tokens.getText(ctx.formalParameters());
-	System.out.println("\t"+type+" "+ctx.Identifier()+args+";"); }
+	System.out.println("\t"+type+" "+ctx.Identifier()+args+";"); 
+	}
 }

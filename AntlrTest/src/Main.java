@@ -19,9 +19,9 @@ public class Main{
 	
 	public static void main(String[] args){
 		
-		String headFirst = "./testcases/headfirst";
+		String headFirst = "./testcases/headfirst/factory/pizzafm";
 		try {
-			File dir = new File(headFirst+"/adapter");
+			File dir = new File(headFirst);
 			ModelBuilder.buildModel(dir);
 			
 			
