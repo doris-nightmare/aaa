@@ -1,8 +1,12 @@
-'public'
-  | 'protected'
-  | 'private'
-  | 'static'
-  | 'abstract'
+General Issues
+======
+
+*Modifier*
++ 'public'
++ 'protected'
++ 'private'
++ 'static'
++ 'abstract'
   
   
   | Left-Aligned  | Center Aligned  | Right Aligned |
