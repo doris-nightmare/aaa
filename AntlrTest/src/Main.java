@@ -19,7 +19,7 @@ public class Main{
 	
 	public static void main(String[] args){
 		
-		String headFirst = "./testcases/headfirst/factory/pizzafm";
+		String headFirst = "./testcases/headfirst/composite";
 		try {
 			File dir = new File(headFirst);
 			ModelBuilder.buildModel(dir);

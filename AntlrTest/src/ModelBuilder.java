@@ -38,5 +38,6 @@ public class ModelBuilder {
 		ParseTreeWalker walker = new ParseTreeWalker();
 		ExtractClassListener extractor = new ExtractClassListener(parser);		
 		walker.walk(extractor, tree);
+		extractor.printClassInfo();
 	}
 }

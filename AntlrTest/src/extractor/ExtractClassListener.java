@@ -8,6 +8,7 @@ import java.util.*;
 import antlr.gencode.Java7BaseListener;
 import antlr.gencode.Java7Parser;
 import antlr.gencode.Java7Parser.ClassOrInterfaceDeclarationContext;
+import antlr.gencode.Java7Parser.FieldDeclarationContext;
 import antlr.gencode.Java7Parser.InterfaceDeclarationContext;
 import antlr.gencode.Java7Parser.NormalClassDeclarationContext;
 import antlr.gencode.Java7Parser.NormalInterfaceDeclarationContext;
@@ -21,7 +22,7 @@ public class ExtractClassListener extends Java7BaseListener {
 	String pkgName=null;
 	Java7Parser parser;
 	List<ClassEntity> classList;
-	
+	 
 	ClassEntity currentClass = null;
 	
 	//constructor
@@ -36,7 +37,7 @@ public class ExtractClassListener extends Java7BaseListener {
 	public void enterPackageDeclaration(PackageDeclarationContext ctx) {
 		// TODO Auto-generated method stub
 		super.enterPackageDeclaration(ctx);
-		pkgName = ctx.qualifiedIdentifier().getText();		
+		pkgName = ctx.qualifiedIdentifier().getText();	
 	}
 	
 	
@@ -48,9 +49,11 @@ public class ExtractClassListener extends Java7BaseListener {
 		
 		//System.out.println(ctx.Identifier().toString());
 		for(Java7Parser.ModifierContext mctx : ctx.modifier()){
-			System.out.println(mctx.getText());
+			//System.out.println(mctx.getText());
 		}
-		
+		currentClass = new ClassEntity();
+		currentClass.setPkgName(pkgName);
+		classList.add(currentClass);
 //		Object a = ctx.classDeclaration().enumDeclaration();
 //		Object b = ctx.classDeclaration().normalClassDeclaration();
 	}
@@ -59,18 +62,6 @@ public class ExtractClassListener extends Java7BaseListener {
 	
 	
 
-
-	@Override
-	public void enterClassDeclaration(Java7Parser.ClassDeclarationContext ctx){
-		
-		
-		
-	}
-	
-	@Override
-	public void exitClassDeclaration(Java7Parser.ClassDeclarationContext ctx){
-		
-	}
 	
 	
 	
@@ -80,11 +71,12 @@ public class ExtractClassListener extends Java7BaseListener {
 	public void enterNormalClassDeclaration(NormalClassDeclarationContext ctx) {
 		// TODO Auto-generated method stub
 		super.enterNormalClassDeclaration(ctx);
-		System.out.println(ctx.Identifier().toString());
+		//System.out.println(ctx.Identifier().toString());
 		
 		//normal class declaration is different from enum
-		ClassEntity ce = new ClassEntity();
+		
 		String className = ctx.Identifier().toString();
+		currentClass.setName(className);
 		
 	}
 
@@ -101,7 +93,8 @@ public class ExtractClassListener extends Java7BaseListener {
 		super.enterNormalInterfaceDeclaration(ctx);
 		
 		String interfaceName = ctx.Identifier().toString();
-		System.out.println(interfaceName);
+		currentClass.setName(interfaceName);
+		//System.out.println(interfaceName);
 	}
 
 	@Override
@@ -109,6 +102,8 @@ public class ExtractClassListener extends Java7BaseListener {
 			NormalInterfaceDeclarationContext ctx) {
 		// TODO Auto-generated method stub
 		super.exitNormalInterfaceDeclaration(ctx);
+		String className = ctx.Identifier().toString();
+		currentClass.setName(className);
 	}
 
 	@Override
@@ -116,12 +111,26 @@ public class ExtractClassListener extends Java7BaseListener {
 	        Java7Parser.MethodDeclarationContext ctx
 	    )
 	{
+		currentClass.addMethod();
 		TokenStream tokens = parser.getTokenStream(); 
 		String type = "void";
 		if ( ctx.typeRef()!=null ) {
 		    type = tokens.getText(ctx.typeRef());
 		}
 		String args = tokens.getText(ctx.formalParameters());
-	System.out.println("\t"+type+" "+ctx.Identifier()+args+";"); 
+	//System.out.println("\t"+type+" "+ctx.Identifier()+args+";"); 
 	}
+
+	@Override
+	public void enterFieldDeclaration(FieldDeclarationContext ctx) {
+		// TODO Auto-generated method stub
+		super.enterFieldDeclaration(ctx);
+		currentClass.addAttr();
+	}
+	
+	public void printClassInfo(){
+		System.out.println(currentClass);
+	}
+	
+	
 }
